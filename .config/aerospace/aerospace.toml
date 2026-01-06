@@ -1,0 +1,195 @@
+# Place a copy of this config to ~/.aerospace.toml
+# After that, you can edit ~/.aerospace.toml to your liking
+
+# Start AeroSpace at login
+start-at-login = true
+
+# =========================================================
+# Commands
+# =========================================================
+
+# Run JankyBorders on startup (Gruvbox colors)
+after-startup-command = [
+    'exec-and-forget borders active_color=0xffebdbb2 inactive_color=0xff282828 width=5.0'
+]
+
+# =========================================================
+# Normalization
+# =========================================================
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+
+# =========================================================
+# Layout
+# =========================================================
+accordion-padding = 30
+default-root-container-layout = 'tiles'
+default-root-container-orientation = 'auto'
+
+# =========================================================
+# Mouse & HID
+# =========================================================
+on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+exec-on-workspace-change = ['/bin/bash', '-c', 'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE']
+automatically-unhide-macos-hidden-apps = false
+
+# =========================================================
+# Gaps
+# =========================================================
+[gaps]
+    inner.horizontal = 12
+    inner.vertical =   12
+    outer.left =       12
+    outer.bottom =     12
+    outer.top =        12
+    outer.right =      12
+
+# =========================================================
+# Key Mapping
+# =========================================================
+[key-mapping]
+    preset = 'qwerty'
+
+# =========================================================
+# Window Rules (App Assignments)
+# =========================================================
+
+# Finder always floating
+[[on-window-detected]]
+if.app-id = 'com.apple.finder'
+run = 'layout floating'
+
+# System Settings floating
+[[on-window-detected]]
+if.app-id = 'com.apple.systempreferences'
+run = 'layout floating'
+
+# Terminal (WezTerm) -> Workspace Terminal
+[[on-window-detected]]
+if.app-id = 'com.github.wez.wezterm'
+run = 'move-node-to-workspace Terminal'
+
+# Browser (Chrome, Brave, Firefox) -> Workspace Browser
+[[on-window-detected]]
+if.app-id = 'com.google.Chrome'
+run = 'move-node-to-workspace Browser'
+
+[[on-window-detected]]
+if.app-id = 'com.brave.Browser'
+run = 'move-node-to-workspace Browser'
+
+[[on-window-detected]]
+if.app-id = 'org.mozilla.firefox'
+run = 'move-node-to-workspace Browser'
+
+# Code (VS Code, IntelliJ) -> Workspace Code
+[[on-window-detected]]
+if.app-id = 'com.microsoft.VSCode'
+run = 'move-node-to-workspace Code'
+
+[[on-window-detected]]
+if.app-id = 'com.jetbrains.intellij'
+run = 'move-node-to-workspace Code'
+
+# Social (Discord, Slack) -> Workspace Social
+[[on-window-detected]]
+if.app-id = 'com.hnc.Discord'
+run = 'move-node-to-workspace Social'
+
+[[on-window-detected]]
+if.app-id = 'com.tinyspeck.slackmacgap'
+run = 'move-node-to-workspace Social'
+
+# Notes (Obsidian, Notion) -> Workspace Notes
+[[on-window-detected]]
+if.app-id = 'md.obsidian'
+run = 'move-node-to-workspace Notes'
+
+[[on-window-detected]]
+if.app-id = 'notion.id'
+run = 'move-node-to-workspace Notes'
+
+
+# =========================================================
+# Keybindings (Main)
+# =========================================================
+[mode.main.binding]
+
+    # --- App Launching ---
+    alt-enter = 'exec-and-forget open -n /Applications/WezTerm.app'
+    alt-d = 'exec-and-forget open -a Raycast' # Change to Spotlight if needed
+
+    # --- Layout ---
+    alt-slash = 'layout tiles horizontal vertical'
+    alt-comma = 'layout accordion horizontal vertical'
+    alt-f = 'layout floating tiling'
+
+    # --- Focus ---
+    alt-h = 'focus left'
+    alt-j = 'focus down'
+    alt-k = 'focus up'
+    alt-l = 'focus right'
+
+    # --- Move ---
+    alt-shift-h = 'move left'
+    alt-shift-j = 'move down'
+    alt-shift-k = 'move up'
+    alt-shift-l = 'move right'
+
+    # --- Resize ---
+    alt-minus = 'resize smart -50'
+    alt-equal = 'resize smart +50'
+
+    # --- Workspaces ---
+    alt-1 = 'workspace 1'
+    alt-2 = 'workspace 2'
+    alt-3 = 'workspace 3'
+    alt-4 = 'workspace 4'
+    alt-5 = 'workspace 5'
+    
+    alt-t = 'workspace Terminal'
+    alt-b = 'workspace Browser'
+    alt-c = 'workspace Code'
+    alt-s = 'workspace Social'
+    alt-n = 'workspace Notes'
+    alt-m = 'workspace Music'
+
+    # --- Move to Workspace ---
+    alt-shift-1 = 'move-node-to-workspace 1'
+    alt-shift-2 = 'move-node-to-workspace 2'
+    alt-shift-3 = 'move-node-to-workspace 3'
+    alt-shift-4 = 'move-node-to-workspace 4'
+    alt-shift-5 = 'move-node-to-workspace 5'
+    
+    alt-shift-t = 'move-node-to-workspace Terminal'
+    alt-shift-b = 'move-node-to-workspace Browser'
+    alt-shift-c = 'move-node-to-workspace Code'
+    alt-shift-s = 'move-node-to-workspace Social'
+    alt-shift-n = 'move-node-to-workspace Notes'
+    alt-shift-m = 'move-node-to-workspace Music'
+
+    # --- Utilities ---
+    alt-tab = 'workspace-back-and-forth'
+    alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
+    alt-shift-semicolon = 'mode service'
+
+    cmd-h = [] # Disable "hide application"
+    cmd-alt-h = [] # Disable "hide others"
+
+# =========================================================
+# Service Mode
+# =========================================================
+[mode.service.binding]
+    esc = ['reload-config', 'mode main']
+    r = ['flatten-workspace-tree', 'mode main'] # reset layout
+    f = ['layout floating tiling', 'mode main'] # Toggle between floating and tiling layout
+    backspace = ['close-all-windows-but-current', 'mode main']
+
+    alt-shift-h = ['join-with left', 'mode main']
+    alt-shift-j = ['join-with down', 'mode main']
+    alt-shift-k = ['join-with up', 'mode main']
+    alt-shift-l = ['join-with right', 'mode main']
+
+    down = 'volume down'
+    up = 'volume up'
+    shift-down = ['volume set 0', 'mode main']
